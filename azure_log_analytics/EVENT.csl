@@ -24,6 +24,10 @@ Event
 //| order by TimeGenerated //"order" works as well
 | limit 1000 
 
+//Get events generated 5 minuter ago
+Event
+| where TimeGenerated > ago(5m)
+
 //Show specific columns
 Event
 | limit 1000
