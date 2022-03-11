@@ -6,6 +6,10 @@
 Event
 | count 
 
+//Get data type
+Event
+| getschema 
+
 //Shows 1000 events
 Event
 | limit  1000
