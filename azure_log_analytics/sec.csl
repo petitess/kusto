@@ -116,3 +116,8 @@ SecurityEvent
 | where EventID in (4720, 4722)
 | summarize by TargetAccount
 ####################
+//how many times users have attempted to log in, how many failed and how many succeeded.
+SecurityEvent
+| where EventID in (4625, 4624) and AccountType == 'User'
+| summarize Attempts = count(), Failed = countif(EventID == 4625), Succeeded = countif(EventID == 4654) by Account
+
