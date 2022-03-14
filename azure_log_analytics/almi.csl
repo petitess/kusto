@@ -1,0 +1,30 @@
+// Accounts which terminated Microsoft Antimalware. 
+SecurityEvent
+| where EventID == 4689
+| where Process has "MsMpEng.exe" or ParentProcessName has "MsMpEng.exe"
+| summarize TerminationCount = count() by Account
+
+/////////////////
+
+// Counts change/reset paswords attempts per target account. 
+SecurityEvent
+| where EventID in (4723, 4724)
+| summarize count() by TargetAccount
+
+//////////////////
+
+// Devices which terminated Microsoft Antimalware. 
+SecurityEvent
+| where EventID == 4689 
+| where Process has "MsMpEng.exe" or ParentProcessName has "MsMpEng.exe"
+| summarize TerminationCount = count() by Computer
+
+///////////////
+ 
+// Find reports of Windows accounts that failed to login. 
+SecurityEvent
+| where EventID == 4625
+| summarize count() by TargetAccount, Computer, _ResourceId // count the reported security events for each account
+| where  Computer == "srv253025.ad.almi.se"
+
+///////////////
