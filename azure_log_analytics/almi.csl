@@ -25,6 +25,6 @@ SecurityEvent
 SecurityEvent
 | where EventID == 4625
 | summarize count() by TargetAccount, Computer, _ResourceId // count the reported security events for each account
-| where  Computer == "srv253025.ad.almi.se"
+| where  Computer == "computer.domain.com"
 
 ///////////////
