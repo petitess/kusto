@@ -121,3 +121,12 @@ SecurityEvent
 | where EventID in (4625, 4624) and AccountType == 'User'
 | summarize Attempts = count(), Failed = countif(EventID == 4625), Succeeded = countif(EventID == 4654) by Account
 
+//top 10 suspicious failed logins, by IP Address. This one comes in handy if you have left RDP open to the world!
+SecurityEvent
+| where AccountType == 'User'
+| where EventID in (4624, 4625)
+| summarize Unique_Accounts = dcount(Account), Attempts = count(), Succeeded=countif(EventID == 4624), Failed=countif(EventID == 4625) by IpAddress
+| where Failed > 0
+| order by Succeeded>0, todouble(Succeeded)/Attempts asc, Attempts desc
+| project IP = IpAddress, Succeeded, Attempts, Unique_Accounts
+| take 10
