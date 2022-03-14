@@ -1,3 +1,4 @@
+//SecurityEvents are only available on the standard tier of Azure Security centre
 // Accounts which terminated Microsoft Antimalware. 
 SecurityEvent
 | where EventID == 4689
