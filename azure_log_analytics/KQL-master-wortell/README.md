@@ -8,4 +8,4 @@ Creating a safer world, one organization at a time_
 
 [https://security.wortell.nl](https://security.wortell.nl)
 
-[https://github.com/wortell/kql]
+https://github.com/wortell/kql
