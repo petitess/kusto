@@ -6,6 +6,10 @@ SecurityDetection
 SecurityEvent
 | where TimeGenerated  >= ago(10d)
 
+//
+search in (SecurityEvent) "ipconfig"
+| sort by TimeGenerated
+
 #############
 //What time it was 1 hour ago
 print(ago(1h))
