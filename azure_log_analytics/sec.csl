@@ -18,6 +18,10 @@ SecurityEvent
 | where Computer contains "prod"
 | where Process contains "explorer.exe"
 
+//Interactive Logon to Server Systems
+SecurityEvent 
+| where ((EventID == "528" or EventID == "529" or EventID == "4624" or EventID == "4625" and LogonType == "2" and Computer == "%ServerSystems%" or Computer == "%DomainControllers%") and not (LogonProcessName == "Advapi" and Computer == "%Workstations%"))
+
 //Finds computers that were active in the last day but did not send heartbeats in the last hour.
 Heartbeat
 | where TimeGenerated > ago(1d)
