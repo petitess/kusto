@@ -99,3 +99,12 @@ SecurityAlert
 | order by IPs
 | count
 
+//parsing Process entities with ProcessId and CommandLine details can look like below.
+SecurityAlert
+| extend EntitiesDynamicArray=parse_json(Entities) | mvexpand EntitiesDynamicArray 
+| extend Entitytype = tostring(parse_json(EntitiesDynamicArray).Type)
+| where Entitytype == "process"
+| extend ProcessId = tostring(parse_json(EntitiesDynamicArray).ProcessId), CommandLine = tostring(parse_json(EntitiesDynamicArray).CommandLine)
+
+
+
