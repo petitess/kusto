@@ -71,3 +71,17 @@ Event
 | where hourofday(TimeGenerated) < 8
 //| where hourofday(TimeGenerated) between (7 .. 8) //This works as well
 | take 1000
+
+// Bypass UAC via Event Viewer
+let timeframe = 3d;
+Event
+| where TimeGenerated >= ago(timeframe)
+| where Source == "Microsoft-Windows-Sysmon"
+| where EventID == 1
+| parse EventData with * 'UtcTime">' UtcTime '</Data>' * 
+| parse EventData with * 'User">' User '</Data>' *
+| parse EventData with * 'OriginalFileName">' OriginalFileName '</Data>' *
+| parse EventData with * 'CommandLine">' CommandLine '</Data>' *
+| parse EventData with * 'ParentCommandLine">' ParentCommandLine '</Data>' *
+| project UtcTime, User, OriginalFileName, CommandLine, ParentCommandLine
+| sort by UtcTime desc
