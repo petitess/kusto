@@ -7,4 +7,5 @@ Source: https://github.com/Neo23x0/sigma/tree/master/rules
 Creating a safer world, one organization at a time_
 
 [https://security.wortell.nl](https://security.wortell.nl)
-https://github.com/wortell/kql - orginal source
+
+[https://github.com/wortell/kql]
