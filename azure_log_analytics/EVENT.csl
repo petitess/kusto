@@ -72,12 +72,15 @@ Event
 //| where hourofday(TimeGenerated) between (7 .. 8) //This works as well
 | take 1000
 
-// Bypass UAC via Event Viewer
+// Bypass UAC via Evenvwr.exe & fodhelper.exe
 let timeframe = 3d;
 Event
 | where TimeGenerated >= ago(timeframe)
 | where Source == "Microsoft-Windows-Sysmon"
-| where EventID == 1
+| where EventID == 1 and RenderedDescription has "OriginalFileName: reg.exe"
+and RenderedDescription has "add"
+and RenderedDescription has "SOFTWARE\\classes\\mscfile\\shell\\open\\command"
+ or RenderedDescription has "software\\classes\\ms-settings\\shell\\open\\command"
 | parse EventData with * 'UtcTime">' UtcTime '</Data>' * 
 | parse EventData with * 'User">' User '</Data>' *
 | parse EventData with * 'OriginalFileName">' OriginalFileName '</Data>' *
