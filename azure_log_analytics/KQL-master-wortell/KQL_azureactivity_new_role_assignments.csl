@@ -1,5 +1,5 @@
 // Show all new Azure Role assignments
 AzureActivity
-| where ResourceProvider == "Microsoft.Authorization'
+| where ResourceProvider == "Microsoft.Authorization"
     and OperationNameValue == "Microsoft.Authorization/roleAssignments/write"
     and ActivityStatus == "Succeeded"
