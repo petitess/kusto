@@ -52,6 +52,15 @@ StormEvents
 | where State == "FLORIDA"  
 | count 
 
+//Checks if volume shadow copy service (VSS) is disabled
+Event
+| where EventID == "7040"
+| extend Logs=parse_xml(EventData)
+| extend ServiceName = tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(Logs.DataItem)).EventData)).Data))[0].["#text"])
+| extend ServiceStatus = tostring(parse_json(tostring(parse_json(tostring(parse_json(tostring(Logs.DataItem)).EventData)).Data))[2].["#text"])
+| where ServiceName == "Volume Shadow Copy" and ServiceStatus == "disabled"
+| project TimeGenerated, Computer, ServiceName, ServiceStatus, UserName, RenderedDescription
+
 ################
 // Computer with missing updates 
 // All computers with missing updates. 
