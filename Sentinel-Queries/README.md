@@ -1,5 +1,6 @@
 # KQL for Microsoft Sentinel
 https://github.com/reprise99/Sentinel-Queries
+
 Some tips, tricks and examples for using KQL for Microsoft Sentinel.
 
 1. [Introduction](#introduction)
