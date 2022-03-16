@@ -2,7 +2,7 @@
 SecurityEvent
 | where EventID == 4689
 | where Process has "MsMpEng.exe" or ParentProcessName has "MsMpEng.exe"
-| where Computer == "srv253025.ad.almi.se"
+| where Computer == "srv253025.ad.se"
 | summarize TerminationCount = count() by Account
 //ELLER:
 // Devices which terminated Microsoft Antimalware. 
@@ -20,7 +20,7 @@ SecurityEvent
 SecurityEvent
 | where EventID == 4625
 | summarize count() by TargetAccount, Computer, _ResourceId // count the reported security events for each account
-| where  Computer == "srv253025.ad.almi.se"
+| where  Computer == "srv253025.ad.se"
 
 //Check if event loggging is disable
 SecurityEvent 
