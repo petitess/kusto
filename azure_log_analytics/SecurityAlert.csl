@@ -1,3 +1,73 @@
+//https://azsec.azurewebsites.net/2019/11/29/work-with-azure-security-center-alert-in-log-analytics/
+
+//list all alerts for the last 24 hours
+SecurityAlert
+| where TimeGenerated >=ago(24h)
+
+//count total number of alerts for the last 24 hours
+SecurityAlert
+| where TimeGenerated >=ago(24h)
+| count
+
+//list specific alert type
+SecurityAlert
+| where TimeGenerated >=ago(24h)
+| where AlertName == "Traffic from unrecommended IP addresses was detected"
+
+//show only column you expect to see for example TimeGenerated, StartTime, EndTime and ResourceId
+SecurityAlert 
+| where TimeGenerated >=ago(24h) 
+| where AlertName == "Traffic from unrecommended IP addresses was detected"
+| project TimeGenerated, StartTime, EndTime, ResourceId
+
+//count number of alerts for each of point of time and sort descending by number
+SecurityAlert
+| where TimeGenerated >=ago(24h)
+| summarize count() by TimeGenerated
+| sort by count_
+
+//count number of alerts that occurs every 1 hour during the last 24 hours
+SecurityAlert
+| where TimeGenerated >=ago(24h)
+| summarize count() by bin(TimeGenerated, 1h)
+
+//list distinct alert for the last 24 hours
+SecurityAlert
+| where TimeGenerated >=ago(24h)
+| distinct AlertName
+
+//visualize alert type with piechart
+SecurityAlert
+| where TimeGenerated >=ago(24h)
+| summarize count() by AlertName
+| render piechart
+
+//list all alerts between a time range
+let startTime = datetime(2019-09-10);
+let endTime = datetime(2019-09-12);
+SecurityAlert
+| where TimeGenerated between (startTime .. endTime)
+
+//parse alert body from JSON to friendly-string format
+SecurityAlert
+| where TimeGenerated >=ago(24h)
+| where AlertName == "Traffic from unrecommended IP addresses was detected"
+| extend destPort = parse_json(ExtendedProperties)['Destination Port']
+| extend protocol = parse_json(ExtendedProperties)['Protocol']
+
+//what process on which machine that causes crash dump
+let processName = SecurityAlert 
+| where DisplayName == "Modified system binary discovered" 
+| where TimeGenerated>=ago(30d) 
+| extend properties = parse_json(ExtendedProperties) 
+| extend process_name = tostring(properties['ProcessName'])
+| extend process_version = tostring(properties['ProcessVersion'])
+| distinct process_name; 
+SecurityEvent 
+| where Process in (processName) 
+| where TimeGenerated>=ago(30d) 
+| project TimeGenerated, Computer, CommandLine, NewProcessName, ParentProcessName, SubjectAccount
+
 //Convert json to a variable using todynamic, then step into the json array and project the values
 SecurityAlert
 | where TimeGenerated > ago(365d)
