@@ -1,6 +1,7 @@
 //https://azure.microsoft.com/en-us/blog/detect-malicious-activity-using-azure-security-center-and-azure-log-analytics/
 //http://contoso.se/blog/?cat=71
 //https://www.beyondtrust.com/blog/entry/windows-server-events-monitor
+//https://www.terminalworks.com/blog/post/2018/08/26/monitoring-active-directory-using-operational-management-suit-oms
 
 //decode a base64 encoded string in the command line data and look for common PowerShell methods that are used in attacks.
 //Version 1
