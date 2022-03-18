@@ -1,3 +1,4 @@
+//http://2forward.be/kusto-query-language-examples/
 //Query Basics
 //Take
 Event | take 100
