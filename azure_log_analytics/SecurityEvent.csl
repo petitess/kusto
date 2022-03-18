@@ -27,3 +27,8 @@ SecurityEvent
       | project Computer, AlertName, Description
 ) on Computer
 
+//CMSTP UAC Bypass via COM Object Access
+SecurityEvent 
+| where EventID == "1" and CommandLine endswith "\\DllHost.exe" 
+and CommandLine endswith "{3E5FC7F9-9A51-4367-9063-A120244FBEC7}" or CommandLine endswith "{3E000D72-A845-4CD9-BD83-80C07C3B881F}"
+
