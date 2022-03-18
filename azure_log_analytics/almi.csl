@@ -52,9 +52,32 @@ SecurityEvent
 | sort by TimeGenerated
 
 //Checks if a rule was added to Azure NSG
-//Run those in resource group
+//Run this in resource group
 AzureActivity
 | where TimeGenerated >= ago(1d)
 | where OperationNameValue contains "networkSecurityGroups/securityRules/write"
 | where ActivityStatus has "Succeeded"
 
+//Find which users clicked on a phishing link after it was detected by Defender for Office 365
+SecurityAlert
+| where ProviderName == "OATP"
+| where AlertName in ("Email messages containing malicious URL removed after delivery​","Email messages containing phish URLs removed after delivery")
+| extend x = todynamic(Entities)
+| mv-expand x
+| parse-where x with * '"Url":"' MaliciousURL '"' *
+| project PhishTime=TimeGenerated, MaliciousURL
+| join kind=inner (
+    DeviceEvents
+    | project TimeGenerated, ActionType, DeviceName, InitiatingProcessAccountName, RemoteUrl
+    | where ActionType == "BrowserLaunchedToOpenUrl"
+    | where RemoteUrl startswith "http")
+    on $left.MaliciousURL == $right.RemoteUrl
+| project-rename URLOpenTime=TimeGenerated
+| extend TimeDelta = abs(URLOpenTime - PhishTime)
+| project PhishTime, URLOpenTime, TimeDelta, ActionType, RemoteUrl, DeviceName, InitiatingProcessAccountName
+
+//Check if LSASS process was dumped either using Procdump or comsvcs.dll
+SecurityEvent 
+  | where EventID == 4688
+  | where CommandLine has_all ("procdump", "lsass") or CommandLine has_all ("rundll32", "comsvcs", "MiniDump")
+  | extend timestamp = TimeGenerated, AccountCustomEntity = Account, HostCustomEntity = Computer
