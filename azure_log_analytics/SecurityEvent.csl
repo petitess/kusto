@@ -38,5 +38,17 @@ SecurityEvent
 | where EventID == "528" or EventID == "529" or EventID == "4624" or EventID == "4625" 
 and LogonType == "2" and Computer == "%ServerSystems%" or Computer == "%DomainControllers%" and LogonProcessName == "Advapi" and Computer == "%Workstations%"
 
+//Time limited query
+let startDateOfAlert = startofday(now());
+let StartAlertTime = startDateOfAlert + 9hours;
+let StopAlertTime = startDateOfAlert + 18hours;
+SecurityEvent
+| extend localTimestamp = TimeGenerated + 2h
+| extend ByPassDays = dayofweek(localTimestamp)
+| where ByPassDays <> ‘6.00:00:00’
+| where ByPassDays <> ‘7.00:00:00’
+| where localTimestamp > StartAlertTime
+| where localTimestamp < StopAlertTime
+| order by localTimestamp asc 
 
 
