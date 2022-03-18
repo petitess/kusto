@@ -48,14 +48,14 @@ Event
 | order by Computer asc
 | project Computer, NumberofEvent=count_
 //Advanced Queries
-let
+//let
 let threshold=10;
 Perf
 | where TimeGenerated > ago(1d)
 | where ObjectName == "LogicalDisk" and CounterName == "% Free Space" and InstanceName == "C:"
 | summarize avgFreeSpace=avg(CounterValue) by Computer
 | where avgFreeSpace < threshold
-join
+//join
 let threshold=10;
 Perf
 | where TimeGenerated > ago(1d)
@@ -75,7 +75,7 @@ let etime = now();
 Event
 | make-series NumberEvents=count() default=0 on TimeGenerated in range(stime, etime, interval) by Computer
 | project TimeGenerated, Computer, NumberEvents
-strcat
+//strcat
 let interval = 1h;
 let stime = ago(7d);
 let etime = now();
@@ -92,8 +92,8 @@ Perf
 | project Computer, memTrend=avg_CounterValue
 | join _HeartBeat on Computer
 | project Computer, memTrend, _resourceGroup = split(ResourceId,"/")[4], _subscription = split(ResourceId,"/")[2]
-arg_max
-//Heartbeat
+//arg_max
+Heartbeat
 | summarize arg_max(TimeGenerated, *) by Computer
 //ComputerGroup
 Heartbeat | where Computer contains_cs "adc" | distinct Computer
@@ -102,8 +102,8 @@ Perf | where Computer in (DC_ComputerGroup)
 Update | where TimeGenerated > ago(1d) | where Classification == "Security Updates" | where UpdateState == "Needed"
 security_updates_last_day | where Title contains "KB4561608"
 //Charts
-UI Chart
-Set QRY Time to 7d
+//UI Chart
+//Set QRY Time to 7d
 
 Perf 
 | where ObjectName == "Memory" and CounterName == "Available MBytes"
