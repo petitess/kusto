@@ -32,3 +32,11 @@ SecurityEvent
 | where EventID == "1" and CommandLine endswith "\\DllHost.exe" 
 and CommandLine endswith "{3E5FC7F9-9A51-4367-9063-A120244FBEC7}" or CommandLine endswith "{3E000D72-A845-4CD9-BD83-80C07C3B881F}"
 
+//Interactive Logon to Server Systems
+SecurityEvent 
+| where TimeGenerated >= ago(1m)
+| where EventID == "528" or EventID == "529" or EventID == "4624" or EventID == "4625" 
+and LogonType == "2" and Computer == "%ServerSystems%" or Computer == "%DomainControllers%" and LogonProcessName == "Advapi" and Computer == "%Workstations%"
+
+
+
