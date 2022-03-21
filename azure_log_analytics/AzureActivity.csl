@@ -31,5 +31,13 @@ AzureActivity
 //Case sensitive search
 | where  ActivityStatusValue has_cs "Failure" and TimeGenerated < ago(5h)
 
+//Checks if Azure NSG was configured
+//Run this in resource group
+AzureActivity
+| where TimeGenerated >= (datetime(2022-03-21T13:48:26.0000000Z) - 1d)
+| where OperationNameValue contains "networkSecurityGroups/securityRules/write"
+| where ActivityStatus has "Succeeded"
+
+
 
 
