@@ -54,4 +54,12 @@ SecurityEvent
 | where localTimestamp < StopAlertTime
 | order by localTimestamp asc 
 
+// Find reports of Windows accounts that failed to login. 
+SecurityEvent
+| where TimeGenerated > ago(1d)
+| where EventID == 4625
+| summarize count() by TargetAccount, Computer, _ResourceId
+| where Computer == "srv253025.ad.almi.se"
+| summarize AggregatedValue = sum(count_) by bin_at(datetime(2022-03-20 10:20:00.0), 60m, datetime(2022-03-21T13:04:23.0000000Z)), _ResourceId
+
 
