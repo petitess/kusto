@@ -2,6 +2,10 @@ Heartbeat
 | summarize LastHeartbeat=max(TimeGenerated) by Computer
 | where TimeGenerated < ago(5m)
 
+Heartbeat
+| where TimeGenerated > now() - 1m
+| sort by TimeGenerated
+
 // Availability rate
 // Calculate the availability rate of each connected computer
 Heartbeat
