@@ -7,6 +7,11 @@ Heartbeat
 | where TimeGenerated > ago(1h)
 | summarize count() by Computer
 
+// Recently stopped heartbeats - Heartbeat table. 
+Heartbeat
+| summarize LastReported=now()-max(TimeGenerated) by ResourceGroup, Resource, ResourceType 
+| where LastReported between(1m..15m)
+
 Heartbeat
 | summarize LastHeartbeat=max(TimeGenerated) by Computer
 | where TimeGenerated < ago(5m)
