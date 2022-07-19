@@ -1,3 +1,12 @@
+// Last heartbeat of each computer. 
+Heartbeat
+| summarize arg_max(TimeGenerated, *) by Computer
+
+// Count computers heartbeats in the last hour. 
+Heartbeat
+| where TimeGenerated > ago(1h)
+| summarize count() by Computer
+
 Heartbeat
 | summarize LastHeartbeat=max(TimeGenerated) by Computer
 | where TimeGenerated < ago(5m)
