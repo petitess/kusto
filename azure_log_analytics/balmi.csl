@@ -8,7 +8,7 @@ SecurityEvent
 SecurityEvent
 | where EventID == 4625
 | summarize count() by TargetAccount, Computer, _ResourceId
-| where  Computer == "srv253025.ad.almi.se"
+| where  Computer == "srv253025.ad.xxxx.se"
 
 //Check if event loggging is disable
 SecurityEvent 
@@ -28,13 +28,13 @@ SecurityEvent
 SecurityEvent 
 | where TimeGenerated >= ago(1d)
 | where EventID == "4946"
-| where Computer != "Az-WVD-79.ad.almi.se" 
-    and Computer != "Az-WVD-78.ad.almi.se" 
-    and Computer != "Az-WVD-77.ad.almi.se"
-    and Computer != "Az-WVD-76.ad.almi.se" 
-    and Computer != "Az-WVD-75.ad.almi.se"
-    and Computer != "Az-RPA04.ad.almi.se" 
-    and Computer != "Az-RPA03.ad.almi.se"
+| where Computer != "Az-WVD-79.ad.xxx.se" 
+    and Computer != "Az-WVD-78.ad.xxx.se" 
+    and Computer != "Az-WVD-77.ad.xxx.se"
+    and Computer != "Az-WVD-76.ad.xxx.se" 
+    and Computer != "Az-WVD-75.ad.xxx.se"
+    and Computer != "Az-RPA04.ad.xxx.se" 
+    and Computer != "Az-RPA03.ad.xxx.se"
 | where EventData !has "Usermode" 
     and EventData !has "PinningConfirmationDialog"
     and EventData !has "NetworkWatcher" 
