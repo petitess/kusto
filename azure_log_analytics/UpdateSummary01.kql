@@ -1,0 +1,3 @@
+UpdateSummary
+| where CriticalUpdatesMissing > 0 or SecurityUpdatesMissing > 0
+| summarize by Computer, CriticalUpdatesMissing, SecurityUpdatesMissing
