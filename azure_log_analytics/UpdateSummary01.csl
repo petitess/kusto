@@ -36,10 +36,14 @@ UpdateSummary
 | where CriticalUpdatesMissing > 0 or SecurityUpdatesMissing > 0
 | summarize by Computer, CriticalUpdatesMissing, SecurityUpdatesMissing, TimeGenerated
           
-
 Update
 | where Computer contains "vmwebprod03" or ResourceId contains "vmwebprod03"
 | where Classification =~ "Critical Updates" or Classification =~ "Security Updates"
 | summarize arg_max(TimeGenerated, *) by Title, Computer
 | where UpdateState =~ "Needed"
 | summarize count() by Title
+
+Update
+| where Classification =~ "Critical Updates" or Classification =~ "Security Updates"
+| where UpdateState =~ "Needed"
+| distinct Computer, Classification, ResourceId
