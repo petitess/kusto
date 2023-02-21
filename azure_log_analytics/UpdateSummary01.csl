@@ -2,12 +2,10 @@ UpdateSummary
 | where CriticalUpdatesMissing > 0 or SecurityUpdatesMissing > 0
 | summarize by Computer, CriticalUpdatesMissing, SecurityUpdatesMissing
 
-
 UpdateSummary
 | where CriticalUpdatesMissing > 0 or SecurityUpdatesMissing > 0
 | where TimeGenerated > ago(30d)
 | distinct  Computer, CriticalUpdatesMissing, SecurityUpdatesMissing
-
 
 // Defining business day display names and business hours lookup table
 let businessInterval = datatable (
