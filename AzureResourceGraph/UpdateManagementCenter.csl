@@ -11,6 +11,11 @@ patchassessmentresources
 security = properties.availablePatchCountByClassification.security,
 critical = properties.availablePatchCountByClassification.critical
 
-resources
-| where type == "microsoft.compute/virtualmachines"
-| where subscriptionId == ""
+patchassessmentresources
+| where type == "microsoft.compute/virtualmachines/patchassessmentresults"
+| where subscriptionId == "b2f0f1dc-be27-46a2-9bb0-e80270acfaa0"
+| where properties.availablePatchCountByClassification.security > 0 or properties.availablePatchCountByClassification.critical > 0
+| extend 
+security = properties.availablePatchCountByClassification.security,
+critical = properties.availablePatchCountByClassification.critical
+| project resourceGroup, security, critical
