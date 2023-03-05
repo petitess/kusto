@@ -1,0 +1,21 @@
+patchassessmentresources
+| where type == "microsoft.compute/virtualmachines/patchassessmentresults"
+| where subscriptionId == "xxx-be27-46a2-9bb0-xxx"
+| where properties.availablePatchCountByClassification.security > 0 or properties.availablePatchCountByClassification.critical > 0
+
+patchassessmentresources
+| where type == "microsoft.compute/virtualmachines/patchassessmentresults"
+| where subscriptionId == "xxx-be27-46a2-xxx"
+| where properties.availablePatchCountByClassification.security > 0 or properties.availablePatchCountByClassification.critical > 0
+| extend 
+security = properties.availablePatchCountByClassification.security,
+critical = properties.availablePatchCountByClassification.critical
+
+patchassessmentresources
+| where type == "microsoft.compute/virtualmachines/patchassessmentresults"
+| where subscriptionId == "xxx-be27-46a2-9bb0-xxx"
+| where properties.availablePatchCountByClassification.security > 0 or properties.availablePatchCountByClassification.critical > 0
+| extend 
+security = properties.availablePatchCountByClassification.security,
+critical = properties.availablePatchCountByClassification.critical
+| project resourceGroup, security, critical
