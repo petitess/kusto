@@ -18,4 +18,4 @@ patchassessmentresources
 | extend 
 security = properties.availablePatchCountByClassification.security,
 critical = properties.availablePatchCountByClassification.critical
-| project resourceGroup, security, critical
+| project resourceGroup, security, critical, id
