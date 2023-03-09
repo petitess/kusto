@@ -36,4 +36,4 @@ patchassessmentresources
 | extend 
 security = properties.availablePatchCountByClassification.security,
 critical = properties.availablePatchCountByClassification.critical
-| project resourceGroup, security, critical, vm = (replace("/subscriptions/b2f0f1dc-be27-46a2-9bb0-e80270acfaa0/resourceGroups/*", "", (trim_end("/patchAssessmentResults/latest", id))))
+| project resourceGroup, security, critical, vm = (replace('/subscriptions/b2f0f1dc-be27-46a2-9bb0-e80270acfaa0/resourceGroups/*', '', (trim_end('/patchAssessmentResults/latest', id))))
