@@ -37,3 +37,13 @@ patchassessmentresources
 security = properties.availablePatchCountByClassification.security,
 critical = properties.availablePatchCountByClassification.critical
 | project resourceGroup, security, critical, vm = (replace('/subscriptions/xxxx-46a2-9bb0-xxxxx/resourceGroups/*', '', (trim_end('/patchAssessmentResults/latest', id))))
+
+patchassessmentresources
+| where type == "microsoft.compute/virtualmachines/patchassessmentresults"
+| where subscriptionId == "xxxxxxx-be27-46a2-9bb0-xxxxxxxx"
+| where properties.availablePatchCountByClassification.security > 0 or properties.availablePatchCountByClassification.critical > 0
+| extend 
+security = properties.availablePatchCountByClassification.security,
+critical = properties.availablePatchCountByClassification.critical,
+vm = (trim_start('/subscriptions/xxxxxxxxxxx-be27-46a2-9bb0-xxxxxxxxx/resourceGroups/*', (trim_end('/patchAssessmentResults/latest', replace("/providers/Microsoft.Compute/virtualMachines", "", id)))))
+| project vm, security, critical
