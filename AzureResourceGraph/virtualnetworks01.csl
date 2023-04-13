@@ -1,0 +1,5 @@
+resources
+| where type == "microsoft.network/virtualnetworks"
+| where properties['subnets'] contains "snet"
+| extend addressSpace = properties.addressSpace.addressPrefixes
+| project name, addressSpace
