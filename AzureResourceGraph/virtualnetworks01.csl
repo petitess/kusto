@@ -27,3 +27,11 @@ Resources
 | extend ipConfig = properties.ipConfiguration.id
 | extend ipAddress = properties.ipAddress
 | project ipAddress, ipConfig
+
+Resources
+| where type =~ 'microsoft.network/virtualnetworks' 
+| where name startswith "vnet"
+| project subnets = properties.subnets
+| mvexpand subnets
+| project subnets.name, addressPrefix = subnets.properties.addressPrefix
+| sort by  tostring(addressPrefix)
