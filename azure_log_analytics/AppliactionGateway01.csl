@@ -7,3 +7,9 @@ AzureDiagnostics
 AzureDiagnostics | order by TimeGenerated 
 | where Category == 'ApplicationGatewayFirewallLog' and requestUri_s !in('/', '/internal-status-0123456789abcdef') and ruleId_s !in(920300, 920320) 
 | project TimeGenerated, ['Correlation ID'] = replace_string(transactionId_g, '-', ''), ['Request path'] = requestUri_s, Action = action_s, Message, Rule = ruleId_s, ['Rule type'] = ruleSetType_s, Scope = policyScopeName_s, ['Source IP'] = clientIp_s
+//First
+AzureDiagnostics
+ | where Category == "ApplicationGatewayFirewallLog" and action_s == "Blocked"
+//Second
+AzureDiagnostics
+ | where Category == "ApplicationGatewayFirewallLog" and action_s == "Matched" and transactionId_g == "646725c5-550c-487d-5436-b5daa416c95e" | distinct ruleId_s
