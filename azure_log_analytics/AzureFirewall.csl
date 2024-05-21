@@ -1,0 +1,2 @@
+AZFWApplicationRule
+| where Action == 'Deny' and SourceIp startswith "10.100.10"
