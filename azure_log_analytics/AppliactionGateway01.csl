@@ -13,3 +13,13 @@ AzureDiagnostics
 //Second
 AzureDiagnostics
  | where Category == "ApplicationGatewayFirewallLog" and action_s == "Matched" and transactionId_g == "646725c5-550c-487d-5436-b5daa416c95e" | distinct ruleId_s
+///////
+AGWFirewallLogs
+| where ClientIp startswith "<IP>"
+| where Action startswith "Blocked"
+//
+AGWFirewallLogs
+| where RuleId startswith "<rule-ID>"
+//
+AGWFirewallLogs
+| where RequestUri startswith "/images"
