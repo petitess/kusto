@@ -1,2 +1,6 @@
 AZFWApplicationRule
 | where Action == 'Deny' and SourceIp startswith "10.100.10"
+
+AZFWNetworkRule
+| union AZFWApplicationRule, AZFWNatRule, AZFWThreatIntel, AZFWIdpsSignature
+| where SourceIp ==  '195.254.200.151'
