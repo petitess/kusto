@@ -23,3 +23,21 @@ AGWFirewallLogs
 //
 AGWFirewallLogs
 | where RequestUri startswith "/images"
+//
+AzureDiagnostics
+| order by TimeGenerated
+| where host_name_s == "www.sol.com"
+    and action_s == "blocked" 
+    and clientIp_s == "1.2.3.4"
+    | summarize AggregatedValue = count() by requestUri_s, _ResourceId, Message, ruleId_s, ruleGroup_s, details_data_s
+//
+let AccessLog = view() {
+AzureDiagnostics
+| where Category == "ApplicationGatewayAccessLog" and originalHost_s == "www.abc.com"
+ };
+AzureDiagnostics
+| join kind=leftouter AccessLog on transactionId_g
+| where Category == "ApplicationGatewayFirewallLog"
+    and hostName_s == "www.abc.com"
+    and requestUri_s startswith "/"
+    and ruleId_s  == "300600"
